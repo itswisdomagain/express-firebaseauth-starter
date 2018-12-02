@@ -1,5 +1,16 @@
 const logger = require("./logger");
 
+function bindMethodsToObject(object, objClass) {
+    Object.getOwnPropertyNames(objClass.prototype)
+        .forEach(method => {
+            if (method.startsWith('component')) {
+                return;
+            }
+
+            object[method] = object[method].bind(object);
+        });
+}
+
 function logError(error) {
     let detail;
     if (error.error) {
@@ -13,5 +24,6 @@ function logError(error) {
 }
 
 module.exports = {
-    logError
+    logError,
+    bindMethodsToObject
 };
